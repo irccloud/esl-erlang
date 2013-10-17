@@ -31,6 +31,11 @@ apt_repository "esl" do
     key "http://binaries.erlang-solutions.com/debian/erlang_solutions.asc"
 end
 
+apt_preference "esl-erlang" do
+   pin "version #{node['esl-erlang'][:version]}"
+   pin_priority "700"
+end
+
 package "esl-erlang" do
     version node['esl-erlang'][:version]
     action :install
