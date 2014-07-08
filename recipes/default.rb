@@ -1,4 +1,26 @@
 include_recipe 'apt'
+
+if node['erlang'] == 17
+  apt_repository "esl" do
+    uri "http://packages.erlang-solutions.com/ubuntu"
+    distribution node['lsb']['codename']
+    components ["contrib"]
+    key "http://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc"
+  end
+
+  apt_preference "erlang-nox" do
+    pin "version 1:17.1"
+    pin_priority "700"
+  end
+
+  package "erlang-nox" do
+    #   version "1:17.1"
+    action :install
+  end
+
+  return
+end
+
 package "equivs"
 
 # This is a nasty hack, but debian packaging for erlang is insane.
