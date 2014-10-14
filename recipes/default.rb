@@ -1,26 +1,5 @@
 include_recipe 'apt'
 
-if node['erlang'] == 17
-  apt_repository "esl" do
-    uri "http://packages.erlang-solutions.com/ubuntu"
-    distribution node['lsb']['codename']
-    components ["contrib"]
-    key "http://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc"
-  end
-
-  apt_preference "erlang-nox" do
-    pin "version 1:17.3"
-    pin_priority "999"
-  end
-
-  package "erlang-nox" do
-    version "1:17.3"
-    action :install
-  end
-
-  return
-end
-
 package "equivs"
 
 # This is a nasty hack, but debian packaging for erlang is insane.
@@ -46,20 +25,42 @@ rm ./erlang-nox*.deb
 EOF
     end
 
-apt_repository "esl" do
-    uri "http://binaries.erlang-solutions.com/debian"
+
+if node['erlang'] == 17
+  apt_repository "esl" do
+    uri "http://packages.erlang-solutions.com/ubuntu"
     distribution node['lsb']['codename']
     components ["contrib"]
-    key "http://binaries.erlang-solutions.com/debian/erlang_solutions.asc"
-end
+    key "http://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc"
+  end
 
-apt_preference "esl-erlang" do
-   pin "version #{node['esl-erlang'][:version]}"
-   pin_priority "700"
-end
+  apt_preference "esl-erlang" do
+    pin "version 1:17.3"
+    pin_priority "999"
+  end
 
-package "esl-erlang" do
-    version node['esl-erlang'][:version]
+  package "esl-erlang" do
+    version "1:17.3"
     action :install
+  end
+else
+  apt_repository "esl" do
+      uri "http://binaries.erlang-solutions.com/debian"
+      distribution node['lsb']['codename']
+      components ["contrib"]
+      key "http://binaries.erlang-solutions.com/debian/erlang_solutions.asc"
+  end
+  
+  apt_preference "esl-erlang" do
+     pin "version #{node['esl-erlang'][:version]}"
+     pin_priority "700"
+  end
+  
+  package "esl-erlang" do
+      version node['esl-erlang'][:version]
+      action :install
+  end
 end
+
+
 
