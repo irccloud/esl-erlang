@@ -9,12 +9,12 @@ if node['erlang'] == 17
   end
 
   apt_preference "erlang-nox" do
-    pin "version 1:17.1"
-    pin_priority "700"
+    pin "version 1:17.3"
+    pin_priority "999"
   end
 
   package "erlang-nox" do
-    #   version "1:17.1"
+    version "1:17.3"
     action :install
   end
 
