@@ -2,6 +2,8 @@ include_recipe 'apt'
 
 if node['erlang'] == 17
   package "erlang-nox"
+  package "erlang-dev"
+  package "erlang-src"
   return
 end
 
